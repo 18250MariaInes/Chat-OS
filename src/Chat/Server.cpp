@@ -167,7 +167,7 @@ class Server {
 	    		pthread_mutex_unlock( &_user_list_mutex );
 		}
 		
-		if (difftime(end, it->second.start) < 30 && it->second.status != "activo") {
+		if (difftime(end, it->second.start) < 30 && it->second.status == "inactivo") {
 			pthread_mutex_lock( &_user_list_mutex );
 	    		_user_list[ it->second.name ].status = "activo";
 	    		pthread_mutex_unlock( &_user_list_mutex );
@@ -511,13 +511,13 @@ class Server {
 		    /* Valid incomming request */
 		    fprintf(s->_log_level, "Nueva solicitud del usuario %s con %d...\n", usr_nm.c_str(), req_ds.req_fd);
 		    ServerResponse res = s->process_request( s->parse_request( req ), user_ifo );
+	            s->update_last_time(user_ifo);
+	            s->check_status();
 		    
 		    if( s->send_response( req_ds.req_fd, &req_ds.socket_info, res ) < -1 ) {
 		        fprintf( s->_log_level, "Error al enviar la respuesta a %d\n", req_ds.req_fd );
 		    } else {
 		        fprintf(s->_log_level, "Enviando respuesta a: %d\n", req_ds.req_fd);
-		        s->update_last_time(user_ifo);
-		        s->check_status();
 		        //t0=clock();
 		    	//user_ifo.t0 = time(0);
 		    	// clock_gettime(CLOCK_MONOTONIC, &user_ifo.start);
