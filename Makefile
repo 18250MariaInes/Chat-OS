@@ -13,10 +13,10 @@ PROTOCC=protoc
 MSGCC= new.pb.cc
 
 server: $(SERVERCPP)
-	 $(CC) $(CPPFLAGS) -o server $(SERVERCPP) $(IDIR)/$(MSGCC) `pkg-config --cflags --libs protobuf`
+	 $(CC) $(CPPFLAGS) -o server $(SERVERCPP) $(IDIR)/$(MSGCC)
 
 client: $(CLIENTCPP)
-	 $(CC) $(CPPFLAGS) -o client  $(CLIENTCPP) $(IDIR)/$(MSGCC) `pkg-config --cflags --libs protobuf`
+	 $(CC) $(CPPFLAGS) -o client  $(CLIENTCPP) $(IDIR)/$(MSGCC)
 
 message: $(IDIR)/new.proto
 	$(PROTOCC) $(PROTOCFLAGS) new.proto
